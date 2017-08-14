@@ -105,3 +105,28 @@ def initial_population():
     print(Counter(accepted_scores))
 
     return training_data
+
+
+def neural_network_mode(input_size):
+    network = input_data(shape=[None, input_size, 1], name='input')
+
+    network = fully_connected(network, 128, activation='relu')
+    network = dropout(network, 0.8)
+
+    network = fully_connected(network, 256, activation='relu')
+    network = dropout(network, 0.8)
+
+    network = fully_connected(network, 512, activation='relu')
+    network = dropout(network, 0.8)
+
+    network = fully_connected(network, 256, activation='relu')
+    network = dropout(network, 0.8)
+
+    network = fully_connected(network, 128, activation='relu')
+    network = dropout(network, 0.8)
+
+    network = fully_connected(network, 2, activation='softmax')
+    network = regression(network, optimizer='adam', learning_rate=LR, loss='categorical_crossentropy', name='targets')
+    model = tflearn.DNN(network, tensorboard_dir='log')
+
+    return model
